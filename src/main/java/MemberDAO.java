@@ -78,7 +78,18 @@ public class MemberDAO {
         return res != 0;
     }
 
-    public void deleteMember(){
-
+    public boolean deleteMember(String ID){
+        var res = 0;
+        try{
+            conn = JDBCUtil.getConnection();
+            stmt = conn.prepareStatement(MEMBER_DELETE);
+            stmt.setString(1,ID);
+            res = stmt.executeUpdate();
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.close(stmt,conn);
+        }
+        return res != 0;
     }
 }

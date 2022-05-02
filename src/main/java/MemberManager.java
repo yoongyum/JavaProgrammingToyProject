@@ -73,8 +73,14 @@ public class MemberManager {
     }
 
     //회원 삭제
-    public void deleteMember(){
-        DAO.deleteMember();
+    public void deleteMember() throws IOException {
+        System.out.print("삭제할 아이디를 입력하세요 (형식 M-00001): ");
+        String inputID = br.readLine();
+        if(DAO.deleteMember(inputID)){
+            System.out.println("---> "+inputID+"삭제에 성공하셨습니다.");
+        }else{
+            System.out.println("---> 일치하는 ID가 없습니다.");
+        }
     }
 
     public void printCommandGuide(){
