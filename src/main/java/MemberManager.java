@@ -1,13 +1,11 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class MemberManager {
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     MemberDAO DAO = new MemberDAO();
-    ArrayList<Member> memberList = new ArrayList<>();
 
     public void readMenu() throws Exception {
 
@@ -50,11 +48,6 @@ public class MemberManager {
 
         DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
 
-        Member member = new Member();
-        member.setId(inputID);
-        member.setName(inputNAME);
-        member.setPhoneNumber(inputPhoneNumber);
-        memberList.add(member);
         System.out.println("---> 회원가입에 성공하셨습니다.");
     }
 

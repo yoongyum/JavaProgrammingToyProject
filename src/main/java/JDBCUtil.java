@@ -28,6 +28,7 @@ public class JDBCUtil {
             e.printStackTrace();
         }
     }
+
     public static void close(ResultSet rs, PreparedStatement stmt, Connection conn) {
         try {
             rs.close();
