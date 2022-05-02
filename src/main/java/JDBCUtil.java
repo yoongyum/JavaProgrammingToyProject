@@ -1,9 +1,6 @@
 import org.h2.Driver;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class JDBCUtil {
     public static Connection getConnection() {
@@ -30,5 +27,13 @@ public class JDBCUtil {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public static void close(ResultSet rs, PreparedStatement stmt, Connection conn) {
+        try {
+            rs.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        close(stmt,conn);
     }
 }

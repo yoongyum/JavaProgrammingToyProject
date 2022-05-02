@@ -30,10 +30,10 @@ public class Member {
 
     @Override
     public String toString() {
-        return "---> Member{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        return "---> Member [" +
+                "memberId=" + id +
+                ", name=" + name +
+                ", phoneNumber=" + phoneNumber +
+                ']';
     }
 }

@@ -36,13 +36,7 @@ public class MemberManager {
 
     //회원 목록
     public void getMemberList(){
-        if(0 < memberList.size()){
-            for (Member member : memberList) {
-                System.out.println(member.toString());
-            }
-        }else{
-            System.out.println("등록된 회원이 없습니다.");
-        }
+        DAO.selectListAll();
     }
 
     //회원 등록
