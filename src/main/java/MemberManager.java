@@ -1,12 +1,18 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 public class MemberManager {
     private BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
+    MemberDAO DAO = new MemberDAO();
+    ArrayList<Member> memberList = new ArrayList<>();
 
-    public void readMenu() throws IOException {
+    public MemberManager() throws Exception {
+    }
+
+    public void readMenu() throws Exception {
 
         while(true){
             printCommandGuide();
@@ -33,11 +39,17 @@ public class MemberManager {
 
     //회원 목록
     public void getMemberList(){
-
+        if(0 < memberList.size()){
+            for (Member member : memberList) {
+                System.out.println(member.toString());
+            }
+        }else{
+            System.out.println("등록된 회원이 없습니다.");
+        }
     }
 
     //회원 등록
-    public void insertMember() throws IOException {
+    public void insertMember() throws Exception {
         System.out.print("아이디를 입력하세요 (형식 M-00001): ");
         String inputID = br.readLine();
         System.out.print("이름을 입력하세요: ");
@@ -45,11 +57,13 @@ public class MemberManager {
         System.out.print("전화번호를 입력하세요: ");
         String inputPhoneNumber = br.readLine();
 
+        DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
 
         Member member = new Member();
         member.setId(inputID);
         member.setId(inputNAME);
         member.setId(inputPhoneNumber);
+        memberList.add(member);
         System.out.println("---> 회원가입에 성공하셨습니다.");
     }
 
