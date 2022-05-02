@@ -9,9 +9,6 @@ public class MemberManager {
     MemberDAO DAO = new MemberDAO();
     ArrayList<Member> memberList = new ArrayList<>();
 
-    public MemberManager() throws Exception {
-    }
-
     public void readMenu() throws Exception {
 
         while(true){
@@ -61,20 +58,29 @@ public class MemberManager {
 
         Member member = new Member();
         member.setId(inputID);
-        member.setId(inputNAME);
-        member.setId(inputPhoneNumber);
+        member.setName(inputNAME);
+        member.setPhoneNumber(inputPhoneNumber);
         memberList.add(member);
         System.out.println("---> 회원가입에 성공하셨습니다.");
     }
 
     //회원 수정
-    public void updateMember(){
+    public void updateMember() throws Exception {
+        System.out.print("수정할 아이디를 입력하세요 (형식 M-00001): ");
+        String inputID = br.readLine();
+        System.out.print("수정할 전화번호를 입력하세요: ");
+        String inputPhoneNumber = br.readLine();
+        if(DAO.updateMember(inputID, inputPhoneNumber)){
+            System.out.println("---> 회원수정에 성공하셨습니다.");
+        }else{
+            System.out.println("---> 일치하는 ID가 없습니다.");
+        }
 
     }
 
     //회원 삭제
     public void deleteMember(){
-
+        DAO.deleteMember();
     }
 
     public void printCommandGuide(){
