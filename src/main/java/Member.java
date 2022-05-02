@@ -30,7 +30,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member{" +
+        return "---> Member{" +
                 "id='" + id + '\'' +
                 ", name='" + name + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
