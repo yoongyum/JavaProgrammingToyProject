@@ -14,11 +14,14 @@ public class MemberDAO {
     //SQL 명령어들
     private String MEMBER_LIST = "SELECT * FROM MEMBER";    // <-- MemberManager.getMemberList
 
+    private String MEMBER_SEARCH = "SELECT * FROM MEMBER WHERE MEMBER_ID = ?";    // <-- MemberManager.insertMember
+
     private String MEMBER_INSERT = "INSERT INTO MEMBER VALUES(?,?,?)";// <-- MemberManager.insertMember
 
     private String MEMBER_UPDATE = "UPDATE MEMBER SET PHONE_NUMBER=? WHERE MEMBER_ID = ?";// <-- MemberManager.updateMember
 
     private String MEMBER_DELETE = "DELETE MEMBER WHERE MEMBER_ID = ?";// <-- MemberManager.deleteMember
+
 
     //모든 멤버 출력
     public void selectListAll(){
@@ -42,6 +45,23 @@ public class MemberDAO {
         }finally {
             JDBCUtil.close(rs,stmt,conn);
         }
+    }
+
+    public boolean searchMember(String id){
+        boolean check = false;
+        try {
+            conn = JDBCUtil.getConnection();
+            stmt = conn.prepareStatement(MEMBER_SEARCH);
+            stmt.setString(1,id);
+            rs = stmt.executeQuery();
+
+            check = rs.next();
+        }catch (SQLException e){
+            e.printStackTrace();
+        } finally {
+            JDBCUtil.close(rs,stmt,conn);
+        }
+        return check;
     }
 
     //회원 가입

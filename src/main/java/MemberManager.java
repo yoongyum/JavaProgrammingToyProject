@@ -46,9 +46,13 @@ public class MemberManager {
         System.out.print("전화번호를 입력하세요: ");
         String inputPhoneNumber = br.readLine();
 
-        DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
+        if(!DAO.searchMember(inputID)){//아이디 중복체크
+            DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
+            System.out.println("---> 회원가입에 성공하셨습니다.");
+        }else{
+            System.out.println("이미 존재하는 ID("+ inputID +")입니다.");
+        }
 
-        System.out.println("---> 회원가입에 성공하셨습니다.");
     }
 
     //회원 수정
