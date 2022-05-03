@@ -1,8 +1,4 @@
-import org.h2.*;
-import org.h2.Driver;
-
 import java.sql.*;
-import java.util.ArrayList;
 
 public class MemberDAO {
 
@@ -14,6 +10,8 @@ public class MemberDAO {
     //SQL 명령어들
     private String MEMBER_LIST = "SELECT * FROM MEMBER";    // <-- MemberManager.getMemberList
 
+    private String MEMBER_COUNT = "SELECT COUNT(*) FROM MEMBER"; // <--- MemberManager.getMemberList
+
     private String MEMBER_SEARCH = "SELECT * FROM MEMBER WHERE MEMBER_ID = ?";    // <-- MemberManager.insertMember
 
     private String MEMBER_INSERT = "INSERT INTO MEMBER VALUES(?,?,?)";// <-- MemberManager.insertMember
@@ -23,23 +21,37 @@ public class MemberDAO {
     private String MEMBER_DELETE = "DELETE MEMBER WHERE MEMBER_ID = ?";// <-- MemberManager.deleteMember
 
 
+    //멤버테이블 갯수출력
+    public int countMember(){
+        int num = 0;
+        try{
+            conn = JDBCUtil.getConnection();
+            stmt = conn.prepareStatement(MEMBER_COUNT);
+            rs = stmt.executeQuery();
+            rs.next();
+            num = Integer.parseInt(rs.getString("COUNT(*)"));
+        }catch (SQLException e){
+            e.printStackTrace();
+        }finally {
+            JDBCUtil.close(rs,stmt, conn);
+        }
+        return num;
+    }
+
+
     //모든 멤버 출력
     public void selectListAll(){
         try{
             conn = JDBCUtil.getConnection();
             stmt = conn.prepareStatement(MEMBER_LIST);
             rs = stmt.executeQuery();
-            int size = 0;
             while(rs.next()){
-                size++;
                 var member = new Member();
                 member.setId(rs.getString("MEMBER_ID"));
                 member.setName(rs.getString("NAME"));
                 member.setPhoneNumber(rs.getString("PHONE_NUMBER"));
                 System.out.println(member.toString());
             }
-            if (size==0) System.out.println("등록된 회원이 없습니다.");
-
         }catch (SQLException e){
             e.printStackTrace();
         }finally {
@@ -47,6 +59,8 @@ public class MemberDAO {
         }
     }
 
+    
+    //특정멤버 검색해서 존재하는지 확인
     public boolean searchMember(String id){
         boolean check = false;
         try {
