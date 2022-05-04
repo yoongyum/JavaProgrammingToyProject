@@ -1,3 +1,4 @@
+
 import java.sql.*;
 
 public class MemberDAO {
@@ -12,7 +13,7 @@ public class MemberDAO {
 
     private String MEMBER_COUNT = "SELECT COUNT(*) FROM MEMBER"; // <--- MemberManager.getMemberList
 
-    private String MEMBER_SEARCH = "SELECT * FROM MEMBER WHERE MEMBER_ID = ?";    // <-- MemberManager.insertMember
+    private String MEMBER_SEARCH = "SELECT * FROM MEMBER WHERE MEMBER_ID = ?";    // <-- MemberManager.insertMember && updateMember && deleteMember
 
     private String MEMBER_INSERT = "INSERT INTO MEMBER VALUES(?,?,?)";// <-- MemberManager.insertMember
 
@@ -59,23 +60,22 @@ public class MemberDAO {
         }
     }
 
-    
+
     //특정멤버 검색해서 존재하는지 확인
     public boolean searchMember(String id){
-        boolean check = false;
         try {
             conn = JDBCUtil.getConnection();
             stmt = conn.prepareStatement(MEMBER_SEARCH);
             stmt.setString(1,id);
             rs = stmt.executeQuery();
 
-            check = rs.next();
+            return rs.next();//true = ID 존재
         }catch (SQLException e){
             e.printStackTrace();
         } finally {
             JDBCUtil.close(rs,stmt,conn);
         }
-        return check;
+        return false;
     }
 
     //회원 가입
@@ -90,7 +90,7 @@ public class MemberDAO {
         } catch (SQLException e){
             e.printStackTrace();
         } finally {
-          JDBCUtil.close(stmt, conn);
+            JDBCUtil.close(stmt, conn);
         }
 
     }
@@ -112,18 +112,17 @@ public class MemberDAO {
         return res != 0;
     }
 
-    public boolean deleteMember(String ID){
-        var res = 0;
+    public void deleteMember(String ID){
         try{
             conn = JDBCUtil.getConnection();
             stmt = conn.prepareStatement(MEMBER_DELETE);
             stmt.setString(1,ID);
-            res = stmt.executeUpdate();
+            stmt.executeUpdate();
         }catch (SQLException e){
             e.printStackTrace();
         }finally {
             JDBCUtil.close(stmt,conn);
         }
-        return res != 0;
     }
 }
+

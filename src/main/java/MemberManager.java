@@ -45,17 +45,17 @@ public class MemberManager {
     public void insertMember() throws Exception {
         System.out.print("아이디를 입력하세요 (형식 M-00001): ");
         String inputID = br.readLine();
+        if(DAO.searchMember(inputID)) {//ID 중복 체크
+            System.out.println("이미 존재하는 ID(" + inputID + ")입니다.");
+            return;
+        }
         System.out.print("이름을 입력하세요: ");
         String inputNAME = br.readLine();
         System.out.print("전화번호를 입력하세요: ");
         String inputPhoneNumber = br.readLine();
 
-        if (!DAO.searchMember(inputID)) {//아이디 중복체크
-            DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
-            System.out.println("---> 회원가입에 성공하셨습니다.");
-        } else {
-            System.out.println("이미 존재하는 ID(" + inputID + ")입니다.");
-        }
+        DAO.insertMember(inputID, inputNAME, inputPhoneNumber);
+        System.out.println("---> 회원가입에 성공하셨습니다.");
 
     }
 
@@ -63,25 +63,29 @@ public class MemberManager {
     public void updateMember() throws Exception {
         System.out.print("수정할 아이디를 입력하세요 (형식 M-00001): ");
         String inputID = br.readLine();
-        System.out.print("수정할 전화번호를 입력하세요: ");
-        String inputPhoneNumber = br.readLine();
-        if (DAO.updateMember(inputID, inputPhoneNumber)) {
-            System.out.println("---> 회원수정에 성공하셨습니다.");
-        } else {
-            System.out.println("---> 일치하는 ID가 없습니다.");
+        if(!DAO.searchMember(inputID)) {//ID 중복 체크
+            System.out.println("---> 일치하는 ID("+inputID+")가 없습니다.");
+            return;
         }
 
+        System.out.print("수정할 전화번호를 입력하세요: ");
+        String inputPhoneNumber = br.readLine();
+        DAO.updateMember(inputID, inputPhoneNumber);
+        System.out.println("---> 회원수정에 성공하셨습니다.");
     }
 
     //회원 삭제
     public void deleteMember() throws IOException {
         System.out.print("삭제할 아이디를 입력하세요 (형식 M-00001): ");
         String inputID = br.readLine();
-        if (DAO.deleteMember(inputID)) {
-            System.out.println("---> " + inputID + "삭제에 성공하셨습니다.");
-        } else {
-            System.out.println("---> 일치하는 ID가 없습니다.");
+
+        if(!DAO.searchMember(inputID)) {//ID 중복 체크
+            System.out.println("---> 일치하는 ID("+inputID+")가 없습니다.");
+            return;
         }
+        DAO.deleteMember(inputID);
+        System.out.println("---> " + inputID + "삭제에 성공하셨습니다.");
+
     }
 
     public void printCommandGuide() {
@@ -92,3 +96,4 @@ public class MemberManager {
         System.out.println("종료을 원하시면 0번을 입력하세요.");
     }
 }
+
